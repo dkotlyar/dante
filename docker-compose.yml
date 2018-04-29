@@ -1,0 +1,34 @@
+version: '3'
+services:
+  dante:
+    image: 'dkotlyar/dante'
+    ports:
+      - 1080:1080
+    volumes:
+      - './config/sockd.conf:/etc/sockd.conf'
+      - './config/pam.d/sockd:/etc/pam.d/sockd'
+      - './config/socks.passwd:/etc/danted/socks.passwd'
+    depends_on:
+      - mariadb
+
+  phpmyadmin:
+    image: 'phpmyadmin/phpmyadmin'
+    ports:
+      - 8080:80
+    environment:
+      - 'PMA_HOST=mariadb'
+      - 'PMA_PORT=3306'
+    depends_on:
+      - mariadb
+
+  mariadb:
+    image: 'mariadb'
+    environment:
+      # Change this password
+      - 'MYSQL_ROOT_PASSWORD=root'
+      # this used in config/pam.d/sockd
+      - 'MYSQL_DATABASE=pam_db'
+      - 'MYSQL_USER=pam_user'
+      - 'MYSQL_PASSWORD=pam_pass'
+    volumes:
+      - './db:/var/lib/mysql'

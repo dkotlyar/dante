@@ -1,0 +1,13 @@
+#%PAM-1.0
+#auth required pam_pwdfile.so pwdfile /etc/danted/socks.passwd
+#account required pam_permit.so
+
+auth required pam_mysql.so host=mariadb:3306 user=pam_user passwd=pam_pass db=pam_db table=pam_table \
+  usercolumn=user passwdcolumn=passwd crypt=mysql verbose=0 sqllog=yes \
+  logtable=pam_log logusercolumn=user logmsgcolumn=message \
+  logpidcolumn=process loghostcolumn=host logtimecolumn=time
+
+account required pam_mysql.so host=mariadb:3306 user=pam_user passwd=pam_pass db=pam_db table=pam_table \
+  usercolumn=user passwdcolumn=passwd crypt=mysql verbose=0 sqllog=yes \
+  logtable=pam_log logusercolumn=user logmsgcolumn=message \
+  logpidcolumn=process loghostcolumn=host logtimecolumn=time
